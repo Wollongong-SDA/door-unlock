@@ -1,9 +1,10 @@
-import dotenv from 'dotenv'
 import express from 'express'
 import { leaveUnlocked, lock, login } from './unifi.js'
 import { consola } from 'consola'
 
+import dotenv from 'dotenv'
 dotenv.config()
+
 let lastTrigger = new Date('1970-01-01')
 
 const app = express()

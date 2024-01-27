@@ -2,6 +2,9 @@ import https from 'https'
 import {fetch, CookieJar} from "node-fetch-cookies"
 import { consola, createConsola } from 'consola'
 
+import dotenv from 'dotenv'
+dotenv.config()
+
 let token
 let lastLogin = new Date('1970-01-01')
 
