@@ -10,7 +10,7 @@ const app = express()
 
 // Whitelisting
 app.use((req, res, next) => {
-  if (!req.ip.includes('10.2.140.2')) {
+  if (!req.ip.includes(process.env.ALLOWED_IP)) {
     consola.warn(`Unauthorized IP ${req.ip} requested '${req.path}'!`)
     return res.sendStatus(403)
   }
