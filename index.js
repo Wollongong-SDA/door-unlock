@@ -23,35 +23,42 @@ app.use((req, res, next) => {
 })
 
 app.get('/leaveUnlocked', async (req, res) => {
+  if ((new Date() - lastTrigger) / (1000) <= 10) {
+    console.warn('Too many requests (leave unlocked within 10 seconds of another command)')
+    return res.sendStatus(429)
+  }
+
   const loginRes = await login()
   if (!loginRes.success) {
     consola.error(new Error('Login Failed'), loginRes.body)
-    res.sendStatus(500)
+    return res.sendStatus(500)
   }
 
   const unlockRes = await leaveUnlocked()
   if (!unlockRes.success) {
     consola.error(new Error('Unlock Failed'), unlockRes.body)
-    res.sendStatus(500)
+    return res.sendStatus(500)
   }
 
-  res.sendStatus(200)
+  lastTrigger = Date.now()
+  return res.sendStatus(200)
 })
 
 app.get('/relock', async (req, res) => {
   const loginRes = await login()
   if (!loginRes.success) {
     consola.error(new Error('Login Failed'), loginRes.body)
-    res.sendStatus(500)
+    return res.sendStatus(500)
   }
 
   const lockRes = await lock()
   if (!lockRes.success) {
     consola.error(new Error('Relock failed'), loginRes.body)
-    res.sendStatus(500)
+    return res.sendStatus(500)
   }
 
-  res.sendStatus(200)
+  lastTrigger = Date.now()
+  return res.sendStatus(200)
 })
 
 const port = process.env.PORT || 3000
