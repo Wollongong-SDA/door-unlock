@@ -25,7 +25,7 @@ export const login = async () => {
       'content-type': 'application/json',
     },
     body: JSON.stringify({
-      username: process.env.USER,
+      username: process.env.USERNAME,
       password: process.env.PASS,
       remember: true,
     }),
