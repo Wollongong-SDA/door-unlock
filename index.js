@@ -11,14 +11,14 @@ const app = express()
 
 // Whitelisting
 app.use((req, res, next) => {
-  // if (!req.ip.includes(process.env.ALLOWED_IP)) {
-  //   consola.warn(`Unauthorized IP ${req.ip} requested '${req.path}'!`)
-  //   return res.sendStatus(403)
-  // }
+  if (!req.ip.includes(process.env.ALLOWED_IP)) {
+    consola.warn(`Unauthorized IP ${req.ip} requested '${req.path}'!`)
+    return res.sendStatus(403)
+  }
 
-  // if (process.env.REJECTALL == 'true') {
-  //   return res.sendStatus(500)
-  // }
+  if (process.env.REJECTALL == 'true') {
+    return res.sendStatus(500)
+  }
 
   next()
 })
