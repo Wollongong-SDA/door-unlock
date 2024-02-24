@@ -8,16 +8,12 @@ dotenv.config()
 let token
 let lastLogin = new Date('1970-01-01')
 
-const cookieJar = new CookieJar('./CookieJar.json')
+let cookieJar = new CookieJar()
 
 const httpAgent = new https.Agent({ rejectUnauthorized: false })
 
 export const login = async () => {
-  if ((new Date() - lastLogin) / (1000 * 60) <= 30) {
-    console.info('Skipping (already logged in)')
-    return {success: true, body: {}}
-  }
-
+  cookieJar = new CookieJar()
   const response = await fetch(cookieJar, 'https://10.2.100.1/api/auth/login', {
     method: 'POST',
     headers: {
@@ -43,6 +39,12 @@ export const login = async () => {
 }
 
 export const leaveUnlocked = async () => {
+  const loginRes = await login()
+  if (!loginRes.success) {
+    consola.error(new Error('Login Failed'), loginRes.body)
+    return {success: false, body: 'hi'}
+  }
+  
   const response = await fetch(cookieJar, 'https://10.2.100.1/proxy/access/api/v2/device/d8b3702b4d56/lock_rule', {
     headers: {
       accept: 'application/json, text/plain, */*',
@@ -69,6 +71,12 @@ export const leaveUnlocked = async () => {
 }
 
 export const lock = async () => {
+  const loginRes = await login()
+  if (!loginRes.success) {
+    consola.error(new Error('Login Failed'), loginRes.body)
+    return {success: false, body: 'hi'}
+  }
+  
   const response = await fetch(cookieJar, 'https://10.2.100.1/proxy/access/api/v2/device/d8b3702b4d56/lock_rule', {
     headers: {
       accept: 'application/json, text/plain, */*',

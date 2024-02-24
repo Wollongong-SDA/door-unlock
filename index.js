@@ -11,14 +11,14 @@ const app = express()
 
 // Whitelisting
 app.use((req, res, next) => {
-  if (!req.ip.includes(process.env.ALLOWED_IP)) {
-    consola.warn(`Unauthorized IP ${req.ip} requested '${req.path}'!`)
-    return res.sendStatus(403)
-  }
+  // if (!req.ip.includes(process.env.ALLOWED_IP)) {
+  //   consola.warn(`Unauthorized IP ${req.ip} requested '${req.path}'!`)
+  //   return res.sendStatus(403)
+  // }
 
-  if (process.env.REJECTALL == 'true') {
-    return res.sendStatus(500)
-  }
+  // if (process.env.REJECTALL == 'true') {
+  //   return res.sendStatus(500)
+  // }
 
   next()
 })
@@ -27,12 +27,6 @@ app.get('/leaveUnlocked', async (req, res) => {
   if ((new Date() - lastTrigger) / (1000) <= 10) {
     console.warn('Too many requests (leave unlocked within 10 seconds of another command)')
     return res.sendStatus(429)
-  }
-
-  const loginRes = await login()
-  if (!loginRes.success) {
-    consola.error(new Error('Login Failed'), loginRes.body)
-    return res.sendStatus(500)
   }
 
   const unlockRes = await leaveUnlocked()
@@ -46,12 +40,6 @@ app.get('/leaveUnlocked', async (req, res) => {
 })
 
 app.get('/relock', async (req, res) => {
-  const loginRes = await login()
-  if (!loginRes.success) {
-    consola.error(new Error('Login Failed'), loginRes.body)
-    return res.sendStatus(500)
-  }
-
   const lockRes = await lock()
   if (!lockRes.success) {
     consola.error(new Error('Relock failed'), loginRes.body)
