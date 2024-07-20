@@ -24,6 +24,7 @@ app.use((req, res, next) => {
 })
 
 app.get('/leaveUnlocked', async (req, res) => {
+  consola.info(`Authorized IP ${req.ip} requested '${req.path}'!`)
   if ((new Date() - lastTrigger) / (1000) <= 10) {
     console.warn('Too many requests (leave unlocked within 10 seconds of another command)')
     return res.sendStatus(429)
@@ -36,10 +37,12 @@ app.get('/leaveUnlocked', async (req, res) => {
   }
 
   lastTrigger = Date.now()
+  consola.info(`Authorized IP ${req.ip} requested '${req.path}' successfully.`)
   return res.sendStatus(200)
 })
 
 app.get('/relock', async (req, res) => {
+  consola.info(`Authorized IP ${req.ip} requested '${req.path}'!`)
   const lockRes = await lock()
   if (!lockRes.success) {
     consola.error(new Error('Relock failed'), loginRes.body)
@@ -47,6 +50,7 @@ app.get('/relock', async (req, res) => {
   }
 
   lastTrigger = Date.now()
+  consola.info(`Authorized IP ${req.ip} requested '${req.path}' successfully.`)
   return res.sendStatus(200)
 })
 
