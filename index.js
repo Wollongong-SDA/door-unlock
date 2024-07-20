@@ -1,5 +1,5 @@
 import express from 'express'
-import { leaveUnlocked, lock, login } from './unifi.js'
+import { leaveUnlocked, lock } from './unifi.js'
 import { consola } from 'consola'
 
 import dotenv from 'dotenv'
