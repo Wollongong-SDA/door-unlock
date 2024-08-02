@@ -45,7 +45,7 @@ app.get('/relock', async (req, res) => {
   consola.info(`Authorized IP ${req.ip} requested '${req.path}'!`)
   const lockRes = await lock()
   if (!lockRes.success) {
-    consola.error(new Error('Relock failed'), loginRes.body)
+    consola.error(new Error('Relock failed'), lockRes.body)
     return res.sendStatus(500)
   }
 
