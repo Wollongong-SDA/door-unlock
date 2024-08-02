@@ -16,10 +16,6 @@ app.use((req, res, next) => {
     return res.sendStatus(403)
   }
 
-  if (process.env.REJECTALL == 'true') {
-    return res.sendStatus(500)
-  }
-
   next()
 })
 
