@@ -48,5 +48,4 @@ app.get('/relock', async (req, res) => {
   return res.sendStatus(200)
 })
 
-const port = process.env.PORT || 3000
-app.listen(port, () => consola.success(`Express started on port ${port}`))
+app.listen(3000, () => consola.success('Express started on port 3000 (inside the container)'))
