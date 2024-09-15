@@ -1,0 +1,9 @@
+services:
+  door-unlock:
+    image: 'ghcr.io/wollongong-sda/door-unlock:latest'
+    container_name: door-unlock
+    environment:
+      - VERSION=docker
+    restart: always
+    ports:
+      - '3000:3000'
