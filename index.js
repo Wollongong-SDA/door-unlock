@@ -1,15 +1,13 @@
 import express from 'express'
 import { leaveUnlocked, lock } from './unifi.js'
 import { consola } from 'consola'
-
 import dotenv from 'dotenv'
-dotenv.config()
 
 let lastTrigger = new Date('1970-01-01')
 
 const app = express()
+dotenv.config()
 
-// Whitelisting
 app.use((req, res, next) => {
   if (!req.ip.includes(process.env.ALLOWED_IP)) {
     consola.warn(`Unauthorized IP ${req.ip} requested '${req.path}'!`)
